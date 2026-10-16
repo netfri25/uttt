@@ -23,13 +23,11 @@ impl GridLayout {
     }
 
     pub fn grid_frame_iter(&self) -> impl Iterator<Item = (GridIndex, Frame)> + 'static {
-        let pad = self.pad;
-
         let indices = GridIndex::ALL.into_iter();
         let frames = self
             .frame
             .split_h(2)
-            .flat_map(move |frame| frame.split_w(2).map(move |frame| frame.shrink(pad)));
+            .flat_map(move |frame| frame.split_w(2));
 
         indices.zip(frames)
     }

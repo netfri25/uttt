@@ -12,7 +12,11 @@ pub const PLAYER_PAD_PERCENT: f32 = 0.4;
 
 impl Game {
     pub fn draw(&mut self, frame: Frame) {
-        self.draw_outer_grid(frame);
+        if let Some(player) = self.winner {
+            self.draw_player(frame, player);
+        } else {
+            self.draw_outer_grid(frame);
+        }
     }
 
     fn draw_grid_lines(&self, frame: Frame) {
@@ -22,9 +26,13 @@ impl Game {
     fn draw_outer_grid(&mut self, frame: Frame) {
         self.draw_grid_lines(frame);
 
-        let layout = GridLayout::new(frame).with_pad(INNER_PAD_PERCENT);
+        let layout = GridLayout::new(frame);
         for (outer_index, frame) in layout.grid_frame_iter() {
-            self.draw_inner_grid(frame, outer_index);
+            if let Some(player) = self.winners_grid[*outer_index as usize] {
+                self.draw_player(frame, player);
+            } else {
+                self.draw_inner_grid(frame.shrink(INNER_PAD_PERCENT), outer_index);
+            }
         }
     }
 

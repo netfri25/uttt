@@ -3,6 +3,7 @@ use crate::player::Player;
 
 use super::{Grid, Pos};
 
+// TODO: make this a newtype
 pub const SIZE: usize = 9;
 pub type ShallowGrid = [Option<Player>; SIZE];
 
@@ -12,7 +13,7 @@ pub struct NaiveGrid {
 }
 
 impl NaiveGrid {
-    fn grid_at(&self, index: GridIndex) -> ShallowGrid {
+    pub fn grid_at(&self, index: GridIndex) -> ShallowGrid {
         self.values[*index as usize]
     }
 }
