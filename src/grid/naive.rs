@@ -1,12 +1,20 @@
+use crate::grid::GridIndex;
 use crate::player::Player;
 
 use super::{Grid, Pos};
 
-const SIZE: usize = 9;
+pub const SIZE: usize = 9;
+pub type ShallowGrid = [Option<Player>; SIZE];
 
 #[derive(Default)]
 pub struct NaiveGrid {
-    values: [[Option<Player>; SIZE]; SIZE],
+    values: [ShallowGrid; SIZE],
+}
+
+impl NaiveGrid {
+    fn grid_at(&self, index: GridIndex) -> ShallowGrid {
+        self.values[*index as usize]
+    }
 }
 
 impl Grid for NaiveGrid {
