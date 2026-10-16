@@ -17,6 +17,7 @@ async fn run() {
     loop {
         clear_background(BLACK);
         let frame = get_window_frame().to_square();
+        game.update(frame);
         game.draw(frame);
         next_frame().await
     }
@@ -25,7 +26,7 @@ async fn run() {
 fn get_window_frame() -> Frame {
     let w = screen_width();
     let h = screen_height();
-    Frame::new(Rect::new(0., 0., w, h))
+    Frame::new(0., 0., w, h)
 }
 
 fn config() -> macroquad::conf::Conf {
@@ -35,7 +36,7 @@ fn config() -> macroquad::conf::Conf {
             window_width: 960,
             window_height: 720,
             fullscreen: false,
-            sample_count: 2,
+            sample_count: 8,
             window_resizable: true,
             platform: miniquad::conf::Platform {
                 linux_backend: miniquad::conf::LinuxBackend::WaylandWithX11Fallback,
@@ -50,6 +51,7 @@ fn config() -> macroquad::conf::Conf {
             key_down: true,
             mouse_down: true,
             mouse_up: true,
+            mouse_motion: true,
             ..Default::default()
         }),
 

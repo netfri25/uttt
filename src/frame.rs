@@ -4,8 +4,22 @@ use macroquad::prelude::Rect;
 pub struct Frame(pub Rect);
 
 impl Frame {
-    pub fn new(rect: Rect) -> Self {
-        Self(rect)
+    pub fn new(x: f32, y: f32, w: f32, h: f32) -> Self {
+        Self(Rect { x, y, w, h })
+    }
+
+    /// splits the frame into multiple frames in the horizontal axis
+    /// 2 splits -> 3 frames
+    pub fn split_w(self, splits: u32) -> impl Iterator<Item = Self> {
+        let w = self.w / (splits + 1) as f32;
+        (0..=splits).map(move |i| Self::new(self.x + w * i as f32, self.y, w, self.h))
+    }
+
+    /// splits the frame into multiple frames in the vertical axis
+    /// 2 splits -> 3 frames
+    pub fn split_h(self, splits: u32) -> impl Iterator<Item = Self> {
+        let h = self.h / (splits + 1) as f32;
+        (0..=splits).map(move |i| Self::new(self.x, self.y + h * i as f32, self.w, h))
     }
 
     /// convert rectangle into a centered square
@@ -20,6 +34,7 @@ impl Frame {
         })
     }
 
+    /// shrink the frame to its center in the horizontal axis
     #[inline(always)]
     pub fn shrink_w(self, percent: f32) -> Self {
         let percent = percent.clamp(0., 1.);
@@ -32,6 +47,7 @@ impl Frame {
         })
     }
 
+    /// shrink the frame to its center in the vertical axis
     #[inline(always)]
     pub fn shrink_h(self, percent: f32) -> Self {
         let percent = percent.clamp(0., 1.);
@@ -44,6 +60,7 @@ impl Frame {
         })
     }
 
+    /// shrink the frame to its center
     #[inline]
     pub fn shrink(self, percent: f32) -> Self {
         let percent = percent.clamp(0., 1.);
@@ -67,6 +84,6 @@ impl std::ops::Deref for Frame {
 
 impl From<Rect> for Frame {
     fn from(value: Rect) -> Self {
-        Self::new(value)
+        Self(value)
     }
 }
