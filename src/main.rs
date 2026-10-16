@@ -1,17 +1,31 @@
 use macroquad::prelude::*;
 
+use crate::frame::Frame;
+
+mod frame;
+mod game;
 mod grid;
 mod player;
-mod game;
 
 fn main() {
     macroquad::Window::from_config(config(), run());
 }
 
 async fn run() {
+    let mut game = game::Game::default();
+
     loop {
+        clear_background(BLACK);
+        let frame = get_window_frame().to_square();
+        game.draw(frame);
         next_frame().await
     }
+}
+
+fn get_window_frame() -> Frame {
+    let w = screen_width();
+    let h = screen_height();
+    Frame::new(Rect::new(0., 0., w, h))
 }
 
 fn config() -> macroquad::conf::Conf {
