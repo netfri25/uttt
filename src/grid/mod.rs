@@ -5,6 +5,7 @@ use crate::player::Player;
 pub const SIZE: usize = 9;
 
 pub mod naive;
+pub mod recorder;
 pub mod section_tracker;
 pub mod winner_cache;
 

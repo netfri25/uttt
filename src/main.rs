@@ -54,7 +54,9 @@ fn config() -> macroquad::conf::Conf {
             key_down: true,
             mouse_down: true,
             mouse_up: true,
-            mouse_motion: true,
+            mouse_motion: false,
+            mouse_wheel: false,
+            touch: true,
             ..Default::default()
         }),
 

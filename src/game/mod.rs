@@ -5,13 +5,14 @@ use crate::draw::consts::INNER_PAD_PERCENT;
 use crate::draw::grid_layout::GridLayout;
 use crate::frame::Frame;
 use crate::grid::naive::NaiveGrid;
+use crate::grid::recorder::Recorder;
 use crate::grid::section_tracker::SectionTracker;
 use crate::grid::winner_cache::WinnerCache;
 use crate::grid::{Grid as _, GridIndex, Pos};
 use crate::player::Player;
 use crate::subgrid::Subgrid;
 
-pub type Grid = SectionTracker<WinnerCache<NaiveGrid>>;
+pub type Grid = Recorder<SectionTracker<WinnerCache<NaiveGrid>>>;
 
 #[derive(Default)]
 pub struct Game {
@@ -52,12 +53,12 @@ impl Game {
             return false;
         }
 
-        self.set_winner();
+        self.update_winner();
 
         true
     }
 
-    fn set_winner(&mut self) {
+    fn update_winner(&mut self) {
         let winners_grid = GridIndex::ALL.map(|i| self.grid.winner_of(i).as_player());
         self.winner = winners_grid.winner().as_player();
     }
