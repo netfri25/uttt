@@ -16,7 +16,7 @@ macro_rules! measure {
         let start = std::time::Instant::now();
         $e;
         start.elapsed()
-    }}
+    }};
 }
 
 async fn run() {
