@@ -1,9 +1,9 @@
-// TODO: make a Draw trait to allow for a more generic approach to drawing grids
-
 use macroquad::prelude::*;
 
+use crate::draw::consts::BACKGROUND;
 use crate::frame::Frame;
 
+mod draw;
 mod frame;
 mod game;
 mod grid;
@@ -18,7 +18,7 @@ async fn run() {
     let mut game = game::Game::default();
 
     loop {
-        clear_background(BLACK);
+        clear_background(BACKGROUND);
         let frame = get_window_frame().to_square();
         game.update(frame);
         game.draw(frame);
