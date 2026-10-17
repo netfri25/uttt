@@ -11,14 +11,36 @@ fn main() {
     macroquad::Window::from_config(config(), run());
 }
 
+macro_rules! measure {
+    ($e:expr) => {{
+        let start = std::time::Instant::now();
+        $e;
+        start.elapsed()
+    }}
+}
+
 async fn run() {
     let mut game = game::Game::default();
+
+    let mut max_update_time = std::time::Duration::ZERO;
+    let mut max_render_time = std::time::Duration::ZERO;
 
     loop {
         clear_background(BACKGROUND);
         let frame = get_window_frame().to_square();
-        game.update(frame);
-        game.draw(frame);
+
+        let update_time = measure!(game.update(frame));
+        if update_time > max_update_time {
+            max_update_time = update_time;
+            eprintln!("max update: {:?}", max_update_time);
+        }
+
+        let render_time = measure!(game.draw(frame));
+        if render_time > max_render_time {
+            max_render_time = render_time;
+            eprintln!("max render: {:?}", max_render_time);
+        }
+
         next_frame().await
     }
 }
