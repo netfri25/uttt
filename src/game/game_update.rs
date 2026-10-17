@@ -2,7 +2,7 @@ use macroquad::prelude::*;
 
 use crate::frame::Frame;
 use crate::game::Game;
-use crate::game::game_draw::INNER_PAD_PERCENT;
+use crate::game::grid_draw::INNER_PAD_PERCENT;
 use crate::game::grid_layout::GridLayout;
 
 impl Game {

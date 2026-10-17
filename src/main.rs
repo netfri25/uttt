@@ -1,3 +1,6 @@
+// TODO: make a Draw trait to allow for a more generic approach to drawing grids
+// TODO: maybe having another trait for a subgrid will be nice
+
 use macroquad::prelude::*;
 
 use crate::frame::Frame;

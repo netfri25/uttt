@@ -2,7 +2,11 @@ use std::ops::Deref;
 
 use crate::player::Player;
 
+pub const SIZE: usize = 9;
+
 pub mod naive;
+pub mod section_tracker;
+pub mod winner_cache;
 
 /// container for the game state
 pub trait Grid {
@@ -12,6 +16,27 @@ pub trait Grid {
     /// set a player in the given grid position.
     /// shouldn't allow placing in a position that can't be played (e.g. occupied / restricted)
     fn set(&mut self, pos: Pos, player: Player) -> bool;
+
+    /// get the winner of a grid
+    fn winner_of(&self, index: GridIndex) -> Winner;
+}
+
+#[derive(Debug, Default, Clone, Copy, PartialEq, Eq)]
+pub enum Winner {
+    #[default]
+    Ongoing,
+    Tie,
+    Player(Player),
+}
+
+impl Winner {
+    pub fn as_player(&self) -> Option<Player> {
+        if let Self::Player(v) = *self {
+            Some(v)
+        } else {
+            None
+        }
+    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
