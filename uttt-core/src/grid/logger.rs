@@ -26,16 +26,15 @@ where
     G: Default,
 {
     fn default() -> Self {
-        let path: Cow<'static, str> = std::env::var("LOG_PATH")
-            .map(Into::into)
-            .unwrap_or("/dev/null".into());
-
-        let target = OpenOptions::new()
-            .create(true)
-            .truncate(true)
-            .write(true)
-            .open(path.as_ref())
-            .ok();
+        let path = std::env::var("LOG_PATH").ok();
+        let target = path.and_then(|path| {
+            OpenOptions::new()
+                .create(true)
+                .truncate(true)
+                .write(true)
+                .open(path)
+                .ok()
+        });
 
         Self {
             grid: Default::default(),
