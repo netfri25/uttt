@@ -1,6 +1,6 @@
-use std::io::Write;
 use std::borrow::Cow;
 use std::fs::{File, OpenOptions};
+use std::io::Write;
 
 use crate::grid::{Grid, Pos};
 use crate::player::Player;

@@ -6,7 +6,7 @@ use super::{Grid, Pos, SIZE};
 
 #[derive(Debug, Default, Clone, PartialEq, Eq)]
 pub struct NaiveGrid {
-    values: [[Option<Player>; 9]; SIZE],
+    values: [[Option<Player>; SIZE]; SIZE],
 }
 
 impl NaiveGrid {

@@ -1,10 +1,10 @@
 use macroquad::prelude::*;
 
-use uttt_core::grid::naive::NaiveGrid;
 use uttt_core::grid::logger::Logger;
+use uttt_core::grid::naive::NaiveGrid;
 use uttt_core::grid::section_tracker::SectionTracker;
 use uttt_core::grid::winner_cache::WinnerCache;
-use uttt_core::grid::{Grid as _, Pos, Winner};
+use uttt_core::grid::{Grid as _, Pos};
 use uttt_core::player::Player;
 
 use crate::draw::Draw;
@@ -18,11 +18,12 @@ pub type Grid = Logger<SectionTracker<WinnerCache<NaiveGrid>>>;
 pub struct Game {
     grid: Grid,
     turn: Player,
+    winner: Option<Player>,
 }
 
 impl Game {
     pub fn draw(&self, frame: Frame) {
-        if let Winner::Player(winner) = self.grid.winner() {
+        if let Some(winner) = self.winner {
             winner.draw(frame)
         } else {
             self.grid.draw(frame)
@@ -30,6 +31,10 @@ impl Game {
     }
 
     pub fn update(&mut self, frame: Frame) {
+        if self.winner.is_some() {
+            return;
+        }
+
         if !is_mouse_button_pressed(MouseButton::Left) {
             return;
         }
@@ -45,6 +50,8 @@ impl Game {
         if success {
             self.turn = self.turn.flip();
         }
+
+        self.winner = self.grid.winner().as_player();
     }
 
     pub fn set(&mut self, pos: Pos, player: Player) -> bool {

@@ -5,8 +5,8 @@ use crate::subgrid::Subgrid as _;
 
 pub const SIZE: usize = 9;
 
-pub mod naive;
 pub mod logger;
+pub mod naive;
 pub mod section_tracker;
 pub mod winner_cache;
 
@@ -79,13 +79,12 @@ impl TryFrom<u8> for GridIndex {
     type Error = ();
 
     fn try_from(value: u8) -> Result<Self, Self::Error> {
-        // 9: the size of the grid
-        (value < 9).then_some(Self(value)).ok_or(())
+        (value < SIZE as u8).then_some(Self(value)).ok_or(())
     }
 }
 
 impl GridIndex {
-    pub const ALL: [Self; 9] = [
+    pub const ALL: [Self; SIZE] = [
         Self(0),
         Self(1),
         Self(2),
