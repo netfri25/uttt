@@ -22,7 +22,13 @@ where
         let layout = GridLayout::new(frame);
         for (outer_index, frame) in layout.grid_frame_iter() {
             if self.section().is_some_and(|allowed| allowed != outer_index) {
-                draw_rectangle(frame.x, frame.y, frame.w, frame.h, WHITE.with_alpha(0.3));
+                draw_rectangle(
+                    frame.x,
+                    frame.y,
+                    frame.w,
+                    frame.h,
+                    WHITE.with_alpha(consts::BLOCKED_ALPHA),
+                );
             }
         }
 
