@@ -4,11 +4,12 @@ mod game_update;
 mod grid_draw;
 mod grid_layout;
 
-use crate::grid::naive::{NaiveGrid, winner_of};
+use crate::grid::naive::NaiveGrid;
 use crate::grid::section_tracker::SectionTracker;
 use crate::grid::winner_cache::WinnerCache;
 use crate::grid::{Grid as _, GridIndex, Pos};
 use crate::player::Player;
+use crate::subgrid::Subgrid;
 
 pub type Grid = SectionTracker<WinnerCache<NaiveGrid>>;
 
@@ -32,6 +33,6 @@ impl Game {
 
     fn set_winner(&mut self) {
         let winners_grid = GridIndex::ALL.map(|i| self.grid.winner_of(i).as_player());
-        self.winner = winner_of(winners_grid).as_player();
+        self.winner = winners_grid.winner().as_player();
     }
 }
