@@ -13,10 +13,9 @@ pub struct Logger<G> {
 
 impl<G> Logger<G> {
     fn log(&mut self, pos: Pos, player: Player) {
-        let message = format!("{:?},{},{}", player, *pos.outer, *pos.inner);
-
-        eprintln!("step: {}", message);
         if let Some(ref mut target) = self.target {
+            let message = format!("{:?},{},{}", player, *pos.outer, *pos.inner);
+            eprintln!("step: {}", message);
             writeln!(target, "{}", message).ok();
         }
     }
