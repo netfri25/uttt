@@ -6,9 +6,6 @@ use crate::frame::Frame;
 mod draw;
 mod frame;
 mod game;
-mod grid;
-mod player;
-mod subgrid;
 
 fn main() {
     macroquad::Window::from_config(config(), run());

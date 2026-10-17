@@ -1,29 +1,28 @@
 use macroquad::prelude::*;
 
+use uttt_core::grid::naive::NaiveGrid;
+use uttt_core::grid::logger::Logger;
+use uttt_core::grid::section_tracker::SectionTracker;
+use uttt_core::grid::winner_cache::WinnerCache;
+use uttt_core::grid::{Grid as _, Pos, Winner};
+use uttt_core::player::Player;
+
 use crate::draw::Draw;
 use crate::draw::consts::INNER_PAD_PERCENT;
 use crate::draw::grid_layout::GridLayout;
 use crate::frame::Frame;
-use crate::grid::naive::NaiveGrid;
-use crate::grid::recorder::Recorder;
-use crate::grid::section_tracker::SectionTracker;
-use crate::grid::winner_cache::WinnerCache;
-use crate::grid::{Grid as _, GridIndex, Pos};
-use crate::player::Player;
-use crate::subgrid::Subgrid;
 
-pub type Grid = Recorder<SectionTracker<WinnerCache<NaiveGrid>>>;
+pub type Grid = Logger<SectionTracker<WinnerCache<NaiveGrid>>>;
 
 #[derive(Default)]
 pub struct Game {
     grid: Grid,
     turn: Player,
-    winner: Option<Player>,
 }
 
 impl Game {
     pub fn draw(&self, frame: Frame) {
-        if let Some(winner) = self.winner {
+        if let Winner::Player(winner) = self.grid.winner() {
             winner.draw(frame)
         } else {
             self.grid.draw(frame)
@@ -49,17 +48,6 @@ impl Game {
     }
 
     pub fn set(&mut self, pos: Pos, player: Player) -> bool {
-        if !self.grid.set(pos, player) {
-            return false;
-        }
-
-        self.update_winner();
-
-        true
-    }
-
-    fn update_winner(&mut self) {
-        let winners_grid = GridIndex::ALL.map(|i| self.grid.winner_of(i).as_player());
-        self.winner = winners_grid.winner().as_player();
+        self.grid.set(pos, player)
     }
 }

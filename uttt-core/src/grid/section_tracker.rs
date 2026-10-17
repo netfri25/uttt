@@ -55,9 +55,4 @@ where
         self.section = playable.then_some(pos.inner);
         true
     }
-
-    #[inline(always)]
-    fn winner_of(&self, index: GridIndex) -> Winner {
-        self.grid.winner_of(index)
-    }
 }

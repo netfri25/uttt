@@ -1,8 +1,8 @@
 use crate::grid::GridIndex;
 use crate::player::Player;
-use crate::subgrid::Subgrid;
+use crate::subgrid::Subgrid as _;
 
-use super::{Grid, Pos, SIZE, Winner};
+use super::{Grid, Pos, SIZE};
 
 #[derive(Debug, Default, Clone, PartialEq, Eq)]
 pub struct NaiveGrid {
@@ -21,16 +21,7 @@ impl Grid for NaiveGrid {
     }
 
     fn set(&mut self, pos: Pos, player: Player) -> bool {
-        let cell = &mut self.values[*pos.outer as usize][*pos.inner as usize];
-        let assign = cell.is_none();
-        if assign {
-            *cell = Some(player);
-        }
-
-        assign
-    }
-
-    fn winner_of(&self, index: GridIndex) -> Winner {
-        self.grid_at(index).winner()
+        let subgrid = &mut self.values[*pos.outer as usize];
+        subgrid.set(pos.inner, player)
     }
 }

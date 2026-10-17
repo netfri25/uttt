@@ -1,11 +1,12 @@
 use std::ops::Deref;
 
 use crate::player::Player;
+use crate::subgrid::Subgrid as _;
 
 pub const SIZE: usize = 9;
 
 pub mod naive;
-pub mod recorder;
+pub mod logger;
 pub mod section_tracker;
 pub mod winner_cache;
 
@@ -18,8 +19,19 @@ pub trait Grid {
     /// shouldn't allow placing in a position that can't be played (e.g. occupied / restricted)
     fn set(&mut self, pos: Pos, player: Player) -> bool;
 
-    /// get the winner of a grid
-    fn winner_of(&self, index: GridIndex) -> Winner;
+    /// get the winner of a subgrid
+    #[inline(always)]
+    fn winner_of(&self, outer: GridIndex) -> Winner {
+        let grid = GridIndex::ALL.map(|inner| self.get(Pos { outer, inner }));
+        grid.subgrid_winner()
+    }
+
+    /// get the winner of the grid
+    #[inline(always)]
+    fn winner(&self) -> Winner {
+        let winners_grid = GridIndex::ALL.map(|i| self.winner_of(i).as_player());
+        winners_grid.subgrid_winner()
+    }
 }
 
 #[derive(Debug, Default, Clone, Copy, PartialEq, Eq)]

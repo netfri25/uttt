@@ -9,6 +9,7 @@ use super::{GridIndex, Pos};
 pub struct WinnerCache<G> {
     grid: G,
     winner: [Cell<Winner>; SIZE],
+    final_winner: Cell<Winner>,
 }
 
 impl<G> std::ops::DerefMut for WinnerCache<G> {
@@ -47,5 +48,14 @@ where
         }
 
         winner.get()
+    }
+
+    #[inline(always)]
+    fn winner(&self) -> Winner {
+        if self.final_winner.get() == Winner::Ongoing {
+            self.final_winner.set(self.grid.winner());
+        }
+
+        self.final_winner.get()
     }
 }

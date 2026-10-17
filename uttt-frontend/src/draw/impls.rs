@@ -1,17 +1,18 @@
 use macroquad::prelude::*;
 
+use uttt_core::grid::Grid;
+use uttt_core::grid::Pos;
+use uttt_core::grid::Winner;
+use uttt_core::grid::naive::NaiveGrid;
+use uttt_core::grid::section_tracker::SectionTracker;
+use uttt_core::grid::winner_cache::WinnerCache;
+use uttt_core::player::Player;
+use uttt_core::subgrid::Subgrid;
+
 use crate::draw::Draw;
 use crate::draw::consts;
 use crate::draw::grid_layout::GridLayout;
 use crate::frame::Frame;
-use crate::grid::Grid;
-use crate::grid::Pos;
-use crate::grid::Winner;
-use crate::grid::naive::NaiveGrid;
-use crate::grid::section_tracker::SectionTracker;
-use crate::grid::winner_cache::WinnerCache;
-use crate::player::Player;
-use crate::subgrid::Subgrid;
 
 impl<G> Draw for SectionTracker<G>
 where

@@ -5,7 +5,7 @@ pub trait Subgrid {
     fn get(&self, index: GridIndex) -> Option<Player>;
     fn set(&mut self, index: GridIndex, player: Player) -> bool;
 
-    fn winner(&self) -> Winner {
+    fn subgrid_winner(&self) -> Winner {
         let index = GridIndex::ALL;
         for i in 0..3 {
             // rows

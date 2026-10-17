@@ -1,13 +1,14 @@
 use macroquad::prelude::vec2;
 
 use crate::frame::Frame;
-use crate::grid::{GridIndex, Pos};
+use uttt_core::grid::{GridIndex, Pos};
 
 pub struct GridLayout {
     frame: Frame,
     pad: f32,
 }
 
+#[allow(unused)]
 impl GridLayout {
     pub fn new(frame: Frame) -> Self {
         Self { frame, pad: 0. }
